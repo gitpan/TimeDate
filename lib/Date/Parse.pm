@@ -1,4 +1,4 @@
-# Date::Parse $Id: //depot/TimeDate/lib/Date/Parse.pm#5 $
+# Date::Parse $Id: //depot/TimeDate/lib/Date/Parse.pm#11 $
 #
 # Copyright (c) 1995 Graham Barr. All rights reserved. This program is free
 # software; you can redistribute it and/or modify it under the same terms
@@ -17,7 +17,7 @@ use Exporter;
 @ISA = qw(Exporter);
 @EXPORT = qw(&strtotime &str2time &strptime);
 
-$VERSION = "2.20";
+$VERSION = "2.22";
 
 my %month = (
 	january		=> 0,
@@ -64,12 +64,9 @@ my $strptime = <<'ESQ';
  my $sufpat = join("|", reverse sort map { lc $_ } @$suf_ref);
 
  my %ampm = (
-	am => 0,
-	pm => 12
+	'a' => 0,  # AM
+	'p' => 12, # PM
 	);
-
- # allow map am +. a.m.
- map { my($z) = $_; $z =~ s#(\w)#$1\.#g; $ampm{$z} = $ampm{$_} } keys %ampm;
 
  my($AM, $PM) = (0,12);
 
@@ -91,19 +88,19 @@ sub {
   $dtstr =~ s#($daypat)\s*(den\s)?# #o;
   # Time: 12:00 or 12:00:00 with optional am/pm
   
-  if ($dtstr =~ s/(\d{4})([-:]?)(\d\d)\2(\d\d)[Tt](\d\d)([-:]?)(\d\d)\6(\d\d)/ /) {
+  if ($dtstr =~ s/(\d{4})([-:]?)(\d\d?)\2(\d\d?)(?:[Tt ](\d\d?)(?:([-:]?)(\d\d?)(?:\6(\d\d?)(?:[.,]\d+)?)?)?)?\b/ /) {
     ($year,$month,$day,$hh,$mm,$ss) = ($1,$3-1,$4,$5,$7,$8);
   }
   else {
 
-    if ($dtstr =~ s#[:\s](\d\d?):(\d\d?)(:(\d\d?)(?:\.\d+)?)?\s*([ap]\.?m\.?)?\s# #o) {
+    if ($dtstr =~ s#[:\s](\d\d?):(\d\d?)(:(\d\d?)(?:\.\d+)?)?\s*(?:([ap])\.?m?\.?)?\s# #o) {
       ($hh,$mm,$ss) = ($1,$2,$4 || 0);
       $merid = $ampm{$5} if $5;
     }
 
     # Time: 12 am
     
-    elsif ($dtstr =~ s#\s(\d\d?)\s*([ap]\.?m\.?)\s# #o) {
+    elsif ($dtstr =~ s#\s(\d\d?)\s*([ap])\.?m?\.?\s# #o) {
       ($hh,$mm,$ss) = ($1,0,0);
       $merid = $ampm{$2};
     }
@@ -124,6 +121,7 @@ sub {
 	$year = $5;
 	# Possible match for 1995-01-24 (short mainframe date format);
 	($year,$month,$day) = ($1, $3 - 1, $5) if $month > 12;
+	return if length($year) > 2 and $year < 1901;
       }
     }
     elsif ($dtstr =~ s#\s(\d+)\s*($sufpat)?\s*($monpat)# #o) {
@@ -328,8 +326,8 @@ I am open to suggestions on this.
 
 Below is a sample list of dates that are known to be parsable with Date::Parse
 
- 1995:01:24:09:08:17.1823213           ISO-8601
- 1995-01-24:09:08:17.1823213
+ 1995:01:24T09:08:17.1823213           ISO-8601
+ 1995-01-24T09:08:17.1823213
  Wed, 16 Jun 94 07:29:35 CST           Comma and day name are optional 
  Thu, 13 Oct 94 10:13:13 -0700
  Wed, 9 Nov 1994 09:50:32 -0500 (EST)  Text in ()'s will be ignored.
@@ -366,5 +364,5 @@ as Perl itself.
 
 =cut
 
-# $Id: //depot/TimeDate/lib/Date/Parse.pm#5 $
+# $Id: //depot/TimeDate/lib/Date/Parse.pm#11 $
 
