@@ -1,71 +1,10 @@
-# Date::Parse
+# Date::Parse $Id: //depot/TimeDate/lib/Date/Parse.pm#2 $
 #
-# Copyright (c) 1995-8 Graham Barr. All rights reserved. This program is free
+# Copyright (c) 1995 Graham Barr. All rights reserved. This program is free
 # software; you can redistribute it and/or modify it under the same terms
 # as Perl itself.
 
 package Date::Parse;
-
-=head1 NAME
-
-Date::Parse - Parse date strings into time values
-
-=head1 SYNOPSIS
-
-	use Date::Parse;
-	
-	$time = str2time($date);
-	
-	($ss,$mm,$hh,$day,$month,$year,$zone) = strptime($date);
-
-=head1 DESCRIPTION
-
-C<Date::Parse> provides two routines for parsing date strings into time values.
-
-=over 4
-
-=item str2time(DATE [, ZONE])
-
-C<str2time> parses C<DATE> and returns a unix time value, or undef upon failure.
-C<ZONE>, if given, specifies the timezone to assume when parsing if the
-date string does not specify a timezome.
-
-=item strptime(DATE [, ZONE])
-
-C<strptime> takes the same arguments as str2time but returns an array of
-values C<($ss,$mm,$hh,$day,$month,$year,$zone)>. Elements are only defined
-if they could be extracted from the date string. The C<$zone> element is
-the timezone offset in seconds from GMT. An empty array is returned upon
-failure.
-
-=head1 MULTI-LANGUAGE SUPPORT
-
-Date::Parse is capable of parsing dates in several languages, these are
-English, French, German and Italian. Changing the language is done via
-a static method call, for example
-
-	Date::Parse->language('German');
-
-will cause Date::Parse to attempt to parse any subsequent dates in German.
-
-This is only a first pass, I am considering changing this to be
-
-	$lang = Date::Language->new('German');
-	$lang->str2time("25 Jun 1996 21:09:55 +0100");
-
-I am open to suggestions on this.
-
-=head1 AUTHOR
-
-Graham Barr <Graham.Barr@pobox.com>
-
-=head1 COPYRIGHT
-
-Copyright (c) 1995-8 Graham Barr. All rights reserved. This program is free
-software; you can redistribute it and/or modify it under the same terms
-as Perl itself.
-
-=cut
 
 require 5.000;
 use strict;
@@ -78,7 +17,7 @@ use Exporter;
 @ISA = qw(Exporter);
 @EXPORT = qw(&strtotime &str2time &strptime);
 
-$VERSION = "2.09"; # $Id:$
+$VERSION = "2.11";
 
 my %month = (
 	january		=> 0,
@@ -214,15 +153,15 @@ sub
  $dst = 1
 	if $dtstr =~ s#\bdst\b##o;
 
- if($dtstr =~ s#\s"?(\w{3,})\s# #o) 
+ if($dtstr =~ s#\s"?(\w{3,})"?\s# #o) 
   {
    $zone = tz_offset($1);
    return ()
     unless(defined $zone);
   }
- elsif($dtstr =~ s#\s(([\-\+])\d\d?)(\d\d)\s# #o)
+ elsif($dtstr =~ s#\s(?:gmt)?(([\-\+])\d\d?)(\d\d)?\s# #o)
   {
-   my $m = $2 . $3;
+   my $m = defined($3) ? $2 . $3 : 0;
    $zone = 60 * ($m + (60 * $1));
   }
 
@@ -300,9 +239,92 @@ sub str2time
 	unless($month <= 11 && $day >= 1 && $day <= 31
 		&& $hh <= 23 && $mm <= 59 && $ss <= 59);
 
- return defined $zone ? timegm($ss,$mm,$hh,$day,$month,$year) - $zone
-    	    	      : timelocal($ss,$mm,$hh,$day,$month,$year);
+ my $result;
+
+ if (defined $zone) {
+   $result = timegm($ss,$mm,$hh,$day,$month,$year);
+   return undef
+     if $result == -1
+        && join("",$ss,$mm,$hh,$day,$month,$year)
+     	        ne "595923311169";
+   $result -= $zone;
+ }
+ else {
+   $result = timelocal($ss,$mm,$hh,$day,$month,$year);
+   return undef
+     if $result == -1
+        && join("",$ss,$mm,$hh,$day,$month,$year)
+     	        ne join("",(localtime(-1))[0..5]);
+ }
+
+ return $result;
 }
 
 1;
+
+__END__
+
+
+=head1 NAME
+
+Date::Parse - Parse date strings into time values
+
+=head1 SYNOPSIS
+
+	use Date::Parse;
+	
+	$time = str2time($date);
+	
+	($ss,$mm,$hh,$day,$month,$year,$zone) = strptime($date);
+
+=head1 DESCRIPTION
+
+C<Date::Parse> provides two routines for parsing date strings into time values.
+
+=over 4
+
+=item str2time(DATE [, ZONE])
+
+C<str2time> parses C<DATE> and returns a unix time value, or undef upon failure.
+C<ZONE>, if given, specifies the timezone to assume when parsing if the
+date string does not specify a timezome.
+
+=item strptime(DATE [, ZONE])
+
+C<strptime> takes the same arguments as str2time but returns an array of
+values C<($ss,$mm,$hh,$day,$month,$year,$zone)>. Elements are only defined
+if they could be extracted from the date string. The C<$zone> element is
+the timezone offset in seconds from GMT. An empty array is returned upon
+failure.
+
+=head1 MULTI-LANGUAGE SUPPORT
+
+Date::Parse is capable of parsing dates in several languages, these are
+English, French, German and Italian. Changing the language is done via
+a static method call, for example
+
+	Date::Parse->language('German');
+
+will cause Date::Parse to attempt to parse any subsequent dates in German.
+
+This is only a first pass, I am considering changing this to be
+
+	$lang = Date::Language->new('German');
+	$lang->str2time("25 Jun 1996 21:09:55 +0100");
+
+I am open to suggestions on this.
+
+=head1 AUTHOR
+
+Graham Barr <gbarr@pobox.com>
+
+=head1 COPYRIGHT
+
+Copyright (c) 1995 Graham Barr. All rights reserved. This program is free
+software; you can redistribute it and/or modify it under the same terms
+as Perl itself.
+
+=cut
+
+# $Id: //depot/TimeDate/lib/Date/Parse.pm#2 $
 

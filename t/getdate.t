@@ -9,13 +9,13 @@ use  Date::Parse;
 
 $data = qq!1995-01-24                ;790905600
 1995-06-24                           ;803952000
+92/01/02 12:01			     ;694353660
+92/01/02 12:01 AM		     ;694310460
+92/01/02 12:01 PM		     ;694353660
 1995-01-24  GMT                      ;790905600
 1995-01-24  BST                      ;790902000
 1995-06-24  GMT                      ;803952000
 1995-06-24  BST                      ;803948400
-92/01/02 12:01 GMT		     ;694353660
-92/01/02 12:01 AM GMT		     ;694310460
-92/01/02 12:01 PM GMT		     ;694353660
 Wed, 16 Jun 94 07:29:35 CST    	     ;771773375
 Wed, 16 Nov 94 07:29:35 CST 	     ;784992575
 Mon, 21 Nov 94 07:42:23 CST 	     ;785425343
@@ -126,18 +126,23 @@ Tue, 15 Nov 1994 13:18:38 -0800      ;784934318
 Tue, 15 Nov 1994 0:18:38 -0800 	     ;784887518
 !;
 
+require Time::Local;
+my $offset = Time::Local::timegm(0,0,0,1,0,70);
+
 @data = split(/\n/, $data);
 
 print "1..", scalar(@data),"\n";
 $loop = 1;
 
+printf "# offset = %d\n", $offset;
+
 foreach (@data){
     my($str,$time_expect) = split ';', $_;
     my $time = Date::Parse::str2time($str);
 
-    if($loop < 3) {
+    if($loop < 6) {
 
-        # The first two tests are parsed in the current time zone
+        # The first five tests are parsed in the current time zone
         # But the check number is in GMT
 
         my @lt = localtime($time_expect);
@@ -158,15 +163,17 @@ foreach (@data){
         $time -= $tzsec;
     }
 
+    $time_expect += $offset;
+
     if($time==$time_expect) {
 	print "ok $loop\n";
     }
     else {
         require Date::Format;
-        print $str,"\t",$time_expect,"\t",$time,"\n";
-        print Date::Format::ctime($time);
-        print Date::Format::ctime($time_expect);
-	print "FAIL $loop\n";
+	print "-"x50,"\nFAIL $loop\n";
+        printf "%s\nDiff:    %d\n", $str, $time - $time_expect;
+        printf "Expect: %10d %s",$time_expect,Date::Format::ctime($time_expect);
+        printf "Got:    %10d %s",$time, Date::Format::ctime($time);
     }
     $loop++;
 }

@@ -33,7 +33,7 @@ C<tz_name()> determines the name of the timezone based on its offset
 
 =head1 AUTHORS
 
-Graham Barr <bodg@pobox.com>
+Graham Barr <gbarr@pobox.com>
 David Muir Sharnoff <muir@idiom.com>
 Paul Foley <paul@ascent.com>
 
@@ -48,7 +48,7 @@ use vars qw(@ISA @EXPORT $VERSION @tz_local);
 
 @ISA = qw(Exporter);
 @EXPORT = qw(tz2zone tz_local_offset tz_offset tz_name);
-$VERSION = "2.07"; #$Id: //depot/TimeDate/Time/Zone.pm#3$
+$VERSION = do { my @r=(q$Revision: 2.6 $=~/\d+/g); sprintf "%d."."%02d"x$#r,@r};
 
 # Parts stolen from code by Paul Foley <paul@ascent.com>
 
@@ -160,6 +160,7 @@ CONFIG: {
 	    "mest" =>   +2*3600,  	 # Middle European Summer   
 	    "sst"  =>   +2*3600,  	 # Swedish Summer
 	    "fst"  =>   +2*3600,  	 # French Summer
+            "eest" =>   +3*3600,         # Eastern European Summer
 	    "wadt" =>   +8*3600,  	 # West Australian Daylight
 	#   "cadt" =>  +10*3600+1800,	 # Central Australian Daylight
 	    "eadt" =>  +11*3600,  	 # Eastern Australian Daylight
@@ -227,7 +228,7 @@ sub tz_offset (;$$)
 {
 	my ($zone, $time) = @_;
 
-	return &tz_local_offset() unless($zone);
+	return &tz_local_offset($time) unless($zone);
 
 	$time = time() unless $time;
 	my(@l) = localtime($time);
@@ -253,12 +254,8 @@ sub tz_name (;$$)
 	$off = tz_offset()
 		unless(defined $off);
 
-	my $dstNow = (localtime(time))[8];
-
-	$dst = $dstNow
+	$dst = (localtime(time))[8]
 		unless(defined $dst);
-
-	$off += ($dst ? 3600 : 0) - ($dstNow ? 3600 : 0);
 
 	if (exists $dstZoneOff{$off} && ($dst || !exists $zoneOff{$off})) {
 		return $dstZoneOff{$off};

@@ -1,48 +1,41 @@
 # This -*- perl -*- script makes the Makefile
-# $Id: Makefile.PL,v 1.2 1997/01/15 21:48:56 gbarr Exp $
+# $Id: //depot/TimeDate/Makefile.PL#4 $
 
 #--- Distribution section ---
 
-
 $DISTNAME = 'TimeDate';
-$VERSION  = "1.08";
+$VERSION  = "1.09";
+
+#--- Write the Makefile
 
 BEGIN { require 5.002 }
 
 use ExtUtils::MakeMaker;
 
-#--- MY package
+my @ppd;
 
-sub MY::libscan
-{
- my($self,$path) = @_;
-
- return '' 
-	if($path =~ m:/(RCS|CVS|SCCS)/: ||
-	   $path =~ m:[~%]$: ||
-	   $path =~ m:\.(orig|rej|nfs|b[ac]k)$:
-	  );
- 
- $path;
+if ($] >= 5.00503) {
+  @ppd = (
+    AUTHOR    => 'Graham Barr <gbarr@pobox.com>',
+    ABSTRACT  => 'Formatting and Parsing of Time and Date'
+  );
 }
 
-#--- Write the Makefile
+sub MY::postamble {
 
-my @clean = qw(*% *.html *.b[ac]k *.old);
+  return '' unless $] >= 5.00503;
 
-push @clean, map { "*/$_" } @clean;
+<<'ESQ';
+
+dist : ppd
+
+ESQ
+}
 
 WriteMakefile(
 	VERSION   => $VERSION,
-#	DISTNAME  => $DISTNAME,
 	NAME      => $DISTNAME,
-	PMLIBDIRS => [qw(Date Time)],
- 
-	'dist'    => {COMPRESS => 'gzip -9f',
-		      SUFFIX   => '.gz', 
-		      DIST_DEFAULT => 'all tardist',
-		     },
- 
-	'clean'   => {FILES => join(" ", @clean)},
+	@ppd
 );
+
 

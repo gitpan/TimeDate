@@ -1,3 +1,62 @@
+Change 442 on 2000/03/29 by <gbarr@pobox.com> (Graham Barr)
+
+	Added PPD stuff to Makefile.PL
+
+Change 441 on 2000/03/29 by <gbarr@pobox.com> (Graham Barr)
+
+	Date::Parse
+	- Allow "s after the timezone
+
+Change 440 on 2000/03/29 by <gbarr@pobox.com> (Graham Barr)
+
+	Date::Format
+	- Fix doc for %c and %C
+
+Change 409 on 2000/03/28 by <gbarr@pobox.com> (Graham Barr)
+
+	Moved .pm files into lib directory
+
+Change 408 on 2000/03/28 by <gbarr@pobox.com> (Graham Barr)
+
+	str2time returns undef on error bit Time::Local returns
+	-1. Check if the -1 is real or an error
+
+Change 407 on 2000/03/28 by <gbarr@pobox.com> (Graham Barr)
+
+	Added Eastern European Summer Time EEST
+
+Change 268 on 1999/03/18 by <gbarr@pobox.com> (Graham Barr)
+
+	Date::Format, Time::Zone
+	- Fix problem with %z and %Z as suggested by
+	  Jason A Smith <smithj4@rpi.edu>
+
+Change 267 on 1999/03/18 by <gbarr@pobox.com> (Graham Barr)
+
+	- Make t/getdate.t more portable as suggested by
+	  Paul Schinder <schinder@pobox.com>
+
+Change 250 on 1999/02/06 by <gbarr@pobox.com> (Graham Barr)
+
+	Date::Format
+	- Correct docs for %d and %e
+
+Change 249 on 1999/02/06 by <gbarr@pobox.com> (Graham Barr)
+
+	Added Date::Language::Czech
+
+Change 180 on 1998/08/05 by <gbarr@pobox.com> (Graham Barr)
+
+	Date::Language
+	- Added Date::Language::French contributed by
+	  Emmanuel Bataille (bem@residents.frmug.org)
+	- Split out the languages into .pm's
+	
+	Date::Parse
+	- Added patch from Alan Burlison to Date::Parse to allow zone
+	  offests +7, +10 and +700
+	- Parse now supports GMT+0100
+
 *** Release 1.08
 
 Fri Jan  2 1998 <gbarr@pobox.com> (Graham Barr)
@@ -8,10 +67,10 @@ Fri Jan  2 1998 <gbarr@pobox.com> (Graham Barr)
 	all
 	- Update Email address and year
 
-Fri Jan  2 1998 <gbarr@pobox.com> (Graham Barr)
+Tue Feb 17 1998 <gbarr@pobox.com> (Graham Barr)
 
 	Date::Language
-	- Added o format to German.
+	- Added format_o to German
 
 Fri Sep 12 1997 <gbarr@pobox.com> (Graham Barr)
 
