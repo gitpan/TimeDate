@@ -4,7 +4,7 @@
 #--- Distribution section ---
 
 $DISTNAME = 'TimeDate';
-$VERSION  = "1.09";
+$VERSION  = "1.10";
 
 #--- Write the Makefile
 

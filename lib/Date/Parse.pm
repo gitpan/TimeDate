@@ -1,4 +1,4 @@
-# Date::Parse $Id: //depot/TimeDate/lib/Date/Parse.pm#2 $
+# Date::Parse $Id: //depot/TimeDate/lib/Date/Parse.pm#5 $
 #
 # Copyright (c) 1995 Graham Barr. All rights reserved. This program is free
 # software; you can redistribute it and/or modify it under the same terms
@@ -17,7 +17,7 @@ use Exporter;
 @ISA = qw(Exporter);
 @EXPORT = qw(&strtotime &str2time &strptime);
 
-$VERSION = "2.11";
+$VERSION = "2.20";
 
 my %month = (
 	january		=> 0,
@@ -59,9 +59,9 @@ map { $day{substr($_,0,3)}   = $day{$_} }   keys %day;
 
 my $strptime = <<'ESQ';
  my %month = map { lc $_ } %$mon_ref;
- my $daypat = join("|", map { lc $_ } keys %$day_ref);
- my $monpat = join("|", keys %month);
- my $sufpat = join("|", map { lc $_ } @$suf_ref);
+ my $daypat = join("|", map { lc $_ } reverse sort keys %$day_ref);
+ my $monpat = join("|", reverse sort keys %month);
+ my $sufpat = join("|", reverse sort map { lc $_ } @$suf_ref);
 
  my %ampm = (
 	am => 0,
@@ -73,121 +73,123 @@ my $strptime = <<'ESQ';
 
  my($AM, $PM) = (0,12);
 
-sub
-{
+sub {
 
- my $dtstr = lc shift;
- my $merid = 24;
+  my $dtstr = lc shift;
+  my $merid = 24;
 
- my($year,$month,$day,$hh,$mm,$ss,$zone,$dst) = (undef) x 8;
+  my($year,$month,$day,$hh,$mm,$ss,$zone,$dst);
 
- $zone = tz_offset(shift)
-    if(@_);
+  $zone = tz_offset(shift) if @_;
 
- while(1) { last unless($dtstr =~ s#\([^\(\)]*\)# #o) }
+  1 while $dtstr =~ s#\([^\(\)]*\)# #o;
 
- $dtstr =~ s#(\A|\n|\Z)# #sog;
+  $dtstr =~ s#(\A|\n|\Z)# #sog;
 
- # ignore day names
- $dtstr =~ s#([\d\w\s])[\.\,]\s#$1 #sog;
- $dtstr =~ s#($daypat)\s*(den\s)?# #o;
- # Time: 12:00 or 12:00:00 with optional am/pm
+  # ignore day names
+  $dtstr =~ s#([\d\w\s])[\.\,]\s#$1 #sog;
+  $dtstr =~ s#($daypat)\s*(den\s)?# #o;
+  # Time: 12:00 or 12:00:00 with optional am/pm
   
- if($dtstr =~ s#[:\s](\d\d?):(\d\d)(:(\d\d)(?:\.\d+)?)?\s*([ap]\.?m\.?)?\s# #o)
-  {
-   ($hh,$mm,$ss) = ($1,$2,$4 || 0);
-   $merid = $ampm{$5} if($5);
+  if ($dtstr =~ s/(\d{4})([-:]?)(\d\d)\2(\d\d)[Tt](\d\d)([-:]?)(\d\d)\6(\d\d)/ /) {
+    ($year,$month,$day,$hh,$mm,$ss) = ($1,$3-1,$4,$5,$7,$8);
+  }
+  else {
+
+    if ($dtstr =~ s#[:\s](\d\d?):(\d\d?)(:(\d\d?)(?:\.\d+)?)?\s*([ap]\.?m\.?)?\s# #o) {
+      ($hh,$mm,$ss) = ($1,$2,$4 || 0);
+      $merid = $ampm{$5} if $5;
+    }
+
+    # Time: 12 am
+    
+    elsif ($dtstr =~ s#\s(\d\d?)\s*([ap]\.?m\.?)\s# #o) {
+      ($hh,$mm,$ss) = ($1,0,0);
+      $merid = $ampm{$2};
+    }
+    
+    # Date: 12-June-96 (using - . or /)
+    
+    if ($dtstr =~ s#\s(\d\d?)([\-\./])($monpat)(\2(\d\d+))?\s# #o) {
+      ($month,$day) = ($month{$3},$1);
+      $year = $5 if $5;
+    }
+    
+    # Date: 12-12-96 (using '-', '.' or '/' )
+    
+    elsif ($dtstr =~ s#\s(\d\d*)([\-\./])(\d\d?)(\2(\d\d+))?\s# #o) {
+      ($month,$day) = ($1 - 1,$3);
+
+      if ($5) {
+	$year = $5;
+	# Possible match for 1995-01-24 (short mainframe date format);
+	($year,$month,$day) = ($1, $3 - 1, $5) if $month > 12;
+      }
+    }
+    elsif ($dtstr =~ s#\s(\d+)\s*($sufpat)?\s*($monpat)# #o) {
+      ($month,$day) = ($month{$3},$1);
+    }
+    elsif ($dtstr =~ s#($monpat)\s*(\d+)\s*($sufpat)?\s# #o) {
+      ($month,$day) = ($month{$1},$2);
+    }
+
+    # Date: 961212
+
+    elsif ($dtstr =~ s#\s(\d\d)(\d\d)(\d\d)\s# #o) {
+      ($year,$month,$day) = ($1,$2-1,$3);
+    }
+
+    $year = $1 if !defined($year) and $dtstr =~ s#\s(\d{2}(\d{2})?)[\s\.,]# #o;
+
   }
 
- # Time: 12 am
-  
- elsif($dtstr =~ s#\s(\d\d?)\s*([ap]\.?m\.?)\s# #o)
-  {
-   ($hh,$mm,$ss) = ($1,0,0);
-   $merid = $ampm{$2};
+  # Zone
+
+  $dst = 1 if $dtstr =~ s#\bdst\b##o;
+
+  if ($dtstr =~ s#\s"?([a-z]{3,4})(dst|\d+[a-z]*|_[a-z]+)?"?\s# #o) {
+    $dst = 1 if $2 and $2 eq 'dst';
+    $zone = tz_offset($1);
+    return unless defined $zone;
   }
-  
- # Date: 12-June-96 (using - . or /)
-  
- if($dtstr =~ s#\s(\d\d?)([\-\./])($monpat)(\2(\d\d+))?\s# #o)
-  {
-   ($month,$day) = ($month{$3},$1);
-   $year = $5
-        if($5);
+  elsif ($dtstr =~ s#\s([a-z]{3,4})?([\-\+]?)-?(\d\d?)(\d\d)?(00)?\s# #o) {
+    my $m = defined($4) ? "$2$4" : 0;
+    my $h = "$2$3";
+    $zone = defined($1) ? tz_offset($1) : 0;
+    return unless defined $zone;
+    $zone += 60 * ($m + (60 * $h));
   }
-  
- # Date: 12-12-96 (using '-', '.' or '/' )
-  
- elsif($dtstr =~ s#\s(\d\d*)([\-\./])(\d\d?)(\2(\d\d+))?\s# #o)
-  {
-   ($month,$day) = ($1 - 1,$3);
-   if($5)
-    {
-     $year = $5;
-     # Possible match for 1995-01-24 (short mainframe date format);
-     ($year,$month,$day) = ($1, $3 - 1, $5)
-    	    if($month > 12);
+
+  if ($dtstr =~ /\S/) {
+    # now for some dumb dates
+    if ($dtstr =~ s/^\s*(ut?|z)\s*$//) {
+      $zone = 0;
+    }
+    elsif ($dtstr =~ s#\s([a-z]{3,4})?([\-\+]?)-?(\d\d?)(\d\d)?(00)?\s# #o) {
+      my $m = defined($4) ? "$2$4" : 0;
+      my $h = "$2$3";
+      $zone = defined($1) ? tz_offset($1) : 0;
+      return unless defined $zone;
+      $zone += 60 * ($m + (60 * $h));
+    }
+
+    return if $dtstr =~ /\S/o;
+  }
+
+  if (defined $hh) {
+    if ($hh == 12) {
+      $hh = 0 if $merid == $AM;
+    }
+    elsif ($merid == $PM) {
+      $hh += 12;
     }
   }
- elsif($dtstr =~ s#\s(\d+)\s*($sufpat)?\s*($monpat)# #o)
-  {
-   ($month,$day) = ($month{$3},$1);
-  }
- elsif($dtstr =~ s#($monpat)\s*(\d+)\s*($sufpat)?\s# #o)
-  {
-   ($month,$day) = ($month{$1},$2);
-  }
 
- # Date: 961212
+  $year -= 1900 if defined $year && $year > 1900;
 
- elsif($dtstr =~ s#\s(\d\d)(\d\d)(\d\d)\s# #o)
-  {
-   ($year,$month,$day) = ($1,$2-1,$3);
-  }
+  $zone += 3600 if defined $zone && $dst;
 
- $year = $1
-    if(!defined($year) && $dtstr =~ s#\s(\d{2}(\d{2})?)[\s\.,]# #o);
-
- # Zone
-
- $dst = 1
-	if $dtstr =~ s#\bdst\b##o;
-
- if($dtstr =~ s#\s"?(\w{3,})"?\s# #o) 
-  {
-   $zone = tz_offset($1);
-   return ()
-    unless(defined $zone);
-  }
- elsif($dtstr =~ s#\s(?:gmt)?(([\-\+])\d\d?)(\d\d)?\s# #o)
-  {
-   my $m = defined($3) ? $2 . $3 : 0;
-   $zone = 60 * ($m + (60 * $1));
-  }
-
- return ()
-    if($dtstr =~ /\S/o);
-
- if(defined $hh)
-  {
-   if($hh == 12)
-    {
-     $hh = 0
-	if $merid == $AM;
-    }
-   elsif($merid == $PM)
-    {
-     $hh += 12;
-    }
-  }
-
- $year -= 1900
-	if(defined $year && $year > 1900);
-
- $zone += 3600
-	if(defined $zone && $dst);
-
- return ($ss,$mm,$hh,$day,$month,$year,$zone);
+  return ($ss,$mm,$hh,$day,$month,$year,$zone);
 }
 ESQ
 
@@ -242,18 +244,26 @@ sub str2time
  my $result;
 
  if (defined $zone) {
-   $result = timegm($ss,$mm,$hh,$day,$month,$year);
+   $result = eval {
+     local $SIG{__DIE__} = sub {}; # Ick!
+     timegm($ss,$mm,$hh,$day,$month,$year);
+   };
    return undef
-     if $result == -1
-        && join("",$ss,$mm,$hh,$day,$month,$year)
+     if !defined $result
+        or $result == -1
+           && join("",$ss,$mm,$hh,$day,$month,$year)
      	        ne "595923311169";
    $result -= $zone;
  }
  else {
-   $result = timelocal($ss,$mm,$hh,$day,$month,$year);
+   $result = eval {
+     local $SIG{__DIE__} = sub {}; # Ick!
+     timelocal($ss,$mm,$hh,$day,$month,$year);
+   };
    return undef
-     if $result == -1
-        && join("",$ss,$mm,$hh,$day,$month,$year)
+     if !defined $result
+        or $result == -1
+           && join("",$ss,$mm,$hh,$day,$month,$year)
      	        ne join("",(localtime(-1))[0..5]);
  }
 
@@ -314,6 +324,36 @@ This is only a first pass, I am considering changing this to be
 
 I am open to suggestions on this.
 
+=head1 EXAMPLE DATES
+
+Below is a sample list of dates that are known to be parsable with Date::Parse
+
+ 1995:01:24:09:08:17.1823213           ISO-8601
+ 1995-01-24:09:08:17.1823213
+ Wed, 16 Jun 94 07:29:35 CST           Comma and day name are optional 
+ Thu, 13 Oct 94 10:13:13 -0700
+ Wed, 9 Nov 1994 09:50:32 -0500 (EST)  Text in ()'s will be ignored.
+ 21 dec 17:05                          Will be parsed in the current time zone
+ 21-dec 17:05
+ 21/dec 17:05
+ 21/dec/93 17:05
+ 1999 10:02:18 "GMT"
+ 16 Nov 94 22:28:20 PST 
+
+=head1 BUGS
+
+When both the month and the date are specified in the date as numbers
+they are always parsed assuming that the month number comes before the
+date. This is the usual format used in American dates.
+
+The reason why it is like this and not dynamic is that it must be
+deterministic. Several people have suggested using the current locale,
+but this will not work as the date being parsed may not be in the format
+of the current locale.
+
+My plans to address this, which will be in a future release, is to allow
+the programmer to state what order they want these values parsed in.
+
 =head1 AUTHOR
 
 Graham Barr <gbarr@pobox.com>
@@ -326,5 +366,5 @@ as Perl itself.
 
 =cut
 
-# $Id: //depot/TimeDate/lib/Date/Parse.pm#2 $
+# $Id: //depot/TimeDate/lib/Date/Parse.pm#5 $
 

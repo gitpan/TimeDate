@@ -1,4 +1,4 @@
-<SOFTPKG NAME="TimeDate" VERSION="1,09,0,0">
+<SOFTPKG NAME="TimeDate" VERSION="1,10,0,0">
 	<TITLE>TimeDate</TITLE>
 	<ABSTRACT>Formatting and Parsing of Time and Date</ABSTRACT>
 	<AUTHOR>Graham Barr &lt;gbarr@pobox.com&gt;</AUTHOR>
