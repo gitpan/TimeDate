@@ -1,3 +1,11 @@
+Change 733 on 2002/06/13 by <gbarr@pobox.com> (Graham Barr)
+
+	Fix missing ;
+
+Change 732 on 2002/06/06 by <gbarr@pobox.com> (Graham Barr)
+
+	Release 1.13
+
 Change 731 on 2002/06/06 by <gbarr@pobox.com> (Graham Barr)
 
 	Fix pattern to allow single digits for month and day (eg '2002-6-1')
