@@ -1,25 +1,25 @@
 ##
-## Dutch tables
-## Contributed by Johannes la Poutre <jlpoutre@corp.nl.home.com>
+## Swedish tables
+## Contributed by Matthew Musgrove <muskrat@mindless.com>
+## Corrected by dempa
 ##
 
-package Date::Language::Dutch;
+package Date::Language::Swedish;
 
 use Date::Language ();
 use vars qw(@ISA @DoW @DoWs @MoY @MoYs @AMPM @Dsuf %MoY %DoW $VERSION);
 @ISA = qw(Date::Language);
-$VERSION = "1.02";
+$VERSION = "1.01";
 
-@MoY  = qw(januari februari maart april mei juni juli
-           augustus september oktober november december);
-@MoYs = map(substr($_, 0, 3), @MoY);
-$MoYs[2] = 'mrt'; # mrt is more common (Frank Maas)
-@DoW  = map($_ . "dag", qw(zon maan dins woens donder vrij zater));
-@DoWs = map(substr($_, 0, 2), @DoW);
+@MoY  = qw(januari februari mars april maj juni juli augusti september oktober november december);
+@MoYs = map { substr($_,0,3) } @MoY;
+@DoW  = map($_ . "dagen", qw(sön mån tis ons tors fre lör));
+@DoWs = map { substr($_,0,2) } @DoW;
 
-# these aren't normally used...
-@AMPM = qw(VM NM);
-@Dsuf = ('e') x 31;
+# the ordinals are not typically used in modern times
+@Dsuf = ('a' x 2, 'e' x 29);
+
+@AMPM =   @{Date::Language::English::AMPM};
 
 
 @MoY{@MoY}  = (0 .. scalar(@MoY));
