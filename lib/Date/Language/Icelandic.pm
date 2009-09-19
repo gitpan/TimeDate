@@ -1,19 +1,19 @@
 ##
-## German tables
+## Icelandic tables
 ##
 
-package Date::Language::German;
+package Date::Language::Icelandic;
 
 use Date::Language ();
 use vars qw(@ISA @DoW @DoWs @MoY @MoYs @AMPM @Dsuf %MoY %DoW $VERSION);
 @ISA = qw(Date::Language);
-$VERSION = "1.02";
+$VERSION = "1.01";
 
-@MoY  = qw(Januar Februar März April Mai Juni
-	   Juli August September Oktober November Dezember);
-@MoYs = qw(Jan Feb Mär Apr Mai Jun Jul Aug Sep Okt Nov Dez);
-@DoW  = qw(Sonntag Montag Dienstag Mittwoch Donnerstag Freitag Samstag);
-@DoWs = qw(Son Mon Die Mit Don Fre Sam);
+@MoY  = qw(Janúar Febrúar Mars Apríl Maí Júni
+	   Júli Ágúst September Október Nóvember Desember);
+@MoYs = qw(Jan Feb Mar Apr Maí Jún Júl Ágú Sep Okt Nóv Des);
+@DoW  = qw(Sunnudagur Mánudagur Þriðjudagur Miðvikudagur Fimmtudagur Föstudagur Laugardagur Sunnudagur);
+@DoWs = qw(Sun Mán Þri Mið Fim Fös Lau Sun);
 
 use Date::Language::English ();
 @AMPM =   @{Date::Language::English::AMPM};
@@ -32,6 +32,5 @@ sub format_b { $MoYs[$_[0]->[4]] }
 sub format_B { $MoY[$_[0]->[4]] }
 sub format_h { $MoYs[$_[0]->[4]] }
 sub format_p { $_[0]->[2] >= 12 ?  $AMPM[1] : $AMPM[0] }
-sub format_o { sprintf("%2d.",$_[0]->[3]) }
 
 1;

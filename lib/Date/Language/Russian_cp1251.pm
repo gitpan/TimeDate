@@ -1,23 +1,25 @@
 ##
-## German tables
+## Russian cp1251
 ##
 
-package Date::Language::German;
+package Date::Language::Russian_cp1251;
 
 use Date::Language ();
 use vars qw(@ISA @DoW @DoWs @MoY @MoYs @AMPM @Dsuf %MoY %DoW $VERSION);
 @ISA = qw(Date::Language);
-$VERSION = "1.02";
+$VERSION = "1.01";
 
-@MoY  = qw(Januar Februar Mдrz April Mai Juni
-	   Juli August September Oktober November Dezember);
-@MoYs = qw(Jan Feb Mдr Apr Mai Jun Jul Aug Sep Okt Nov Dez);
-@DoW  = qw(Sonntag Montag Dienstag Mittwoch Donnerstag Freitag Samstag);
-@DoWs = qw(Son Mon Die Mit Don Fre Sam);
+@DoW = qw(Воскресенье Понедельник Вторник Среда Четверг Пятница Суббота);
+@MoY = qw(Январь Февраль Март Апрель Май Июнь
+      Июль Август Сентябрь Октябрь Ноябрь Декабрь);
+@DoWs = qw(Вск Пнд Втр Срд Чтв Птн Сбт);
+#@DoWs = map { substr($_,0,3) } @DoW;
+@MoYs = map { substr($_,0,3) } @MoY;
+@AMPM = qw(AM PM);
 
-use Date::Language::English ();
-@AMPM =   @{Date::Language::English::AMPM};
-@Dsuf =   @{Date::Language::English::Dsuf};
+@Dsuf = ('e') x 31;
+#@Dsuf[11,12,13] = qw(е е е);
+#@Dsuf[30,31] = qw(е е);
 
 @MoY{@MoY}  = (0 .. scalar(@MoY));
 @MoY{@MoYs} = (0 .. scalar(@MoYs));
@@ -32,6 +34,6 @@ sub format_b { $MoYs[$_[0]->[4]] }
 sub format_B { $MoY[$_[0]->[4]] }
 sub format_h { $MoYs[$_[0]->[4]] }
 sub format_p { $_[0]->[2] >= 12 ?  $AMPM[1] : $AMPM[0] }
-sub format_o { sprintf("%2d.",$_[0]->[3]) }
+sub format_o { sprintf("%2de",$_[0]->[3]) }
 
 1;
