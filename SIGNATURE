@@ -14,13 +14,13 @@ not run its Makefile.PL or Build.PL.
 -----BEGIN PGP SIGNED MESSAGE-----
 Hash: SHA1
 
-SHA1 cecbf1a91a77c15f8c1b67a6fcd7c49a3732bd44 ChangeLog
-SHA1 d3c984961a8f54eb54be1f8b189a0be6e847cbcb MANIFEST
-SHA1 3d1c5c46cee2cbb3f8640559272665830d0069cd META.yml
-SHA1 24438338501bdd7967eeaa53200bd033bf6b59c7 Makefile.PL
+SHA1 b7897871cffc64d6212818ba0adde142141f8800 ChangeLog
+SHA1 205981f550ad232f94d59d8eb79c5e6ecbe8f48d MANIFEST
+SHA1 f798be2f41a717d0444f0cd001aaca064bee7729 META.yml
+SHA1 28df04c70d8fcf116009ad7b41c6932b42817128 Makefile.PL
 SHA1 80cff3b1f65e7df95eaa1a992b688c2c5e1d2b6e README
 SHA1 6823bd5e2e3cac12b7b9870d9840f4606f3eb422 lib/Date/Format.pm
-SHA1 af73ebb9acd72275d6f137f8b85181300b160865 lib/Date/Language.pm
+SHA1 08342e72298e839f21236dff7555f2505f928d32 lib/Date/Language.pm
 SHA1 50703aeade60a04398517416d30a2d8918c95578 lib/Date/Language/Afar.pm
 SHA1 f9450ca0047510a4102c32cc4e20a435cdd85b31 lib/Date/Language/Amharic.pm
 SHA1 f00534703736026830f729445d0d6f582481a05e lib/Date/Language/Austrian.pm
@@ -36,6 +36,7 @@ SHA1 105169f2848df40ac1111f0130ec1bb4b74647d8 lib/Date/Language/French.pm
 SHA1 dc2f9c1cee48be3b73613ca9ed1291e9c976a37e lib/Date/Language/Gedeo.pm
 SHA1 794a9b715e66fdcc428a65b2972ced4fee62b52c lib/Date/Language/German.pm
 SHA1 863bb62fd08b3e61c63a2df3d65323d8e6c1b651 lib/Date/Language/Greek.pm
+SHA1 ef36b95b44a7161cfc06a881591cde78e4f5dfaa lib/Date/Language/Hungarian.pm
 SHA1 34da50806290fe731fd1e01290728fcd0b6d02a2 lib/Date/Language/Icelandic.pm
 SHA1 de5069f424fed480586bc2dcff1cca1930bf98a1 lib/Date/Language/Italian.pm
 SHA1 e4e81280ba513a3ab6e0bee01704913dd730c9a8 lib/Date/Language/Norwegian.pm
@@ -55,14 +56,14 @@ SHA1 54288741c52b09ee92b0487848df74a08cdc3b9e lib/Date/Language/Turkish.pm
 SHA1 dbcc4a151b1c558b32ed61fa7ee98e0fb47b9d7f lib/Date/Parse.pm
 SHA1 394c7d372c25107ba5151ceca44c0599188907c7 lib/Time/Zone.pm
 SHA1 62465108c0d5fc14e08ae41e2f963c4d9074b1d6 t/cpanrt.t
-SHA1 feb2a7e4f5017827ef092282b723fbfc3a6f60a9 t/date.t
+SHA1 7b16580497a96a4bc551b87b8b97ec89331e81f8 t/date.t
 SHA1 bf6f4a7c599485ab11779c99fc821378e547d26d t/format.t
 SHA1 acef4dd152cd391a3e7a7945c8405a50d965f335 t/getdate.t
 SHA1 501dcb487e33f6b2d4577ef2e6e5f67f038d3c04 t/lang.t
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v1.4.9 (Darwin)
 
-iEYEARECAAYFAkq1AQsACgkQR0BL4gbYw3T+tgCdEynD3Yl0D9s1auT8i2NDDa8C
-fhMAn2Pp33CDqqwW8cXmq4NM3IV94sX5
-=vP9T
+iEYEARECAAYFAkq79rEACgkQR0BL4gbYw3RnhwCfT6z+gUfQgc4SbMSwKiC1FplE
+qvwAn3MoWd3B2Xj3mgqKoO531oEjE0B6
+=F5H/
 -----END PGP SIGNATURE-----
