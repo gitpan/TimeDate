@@ -1,6 +1,6 @@
 --- #YAML:1.0
 name:               TimeDate
-version:            1.18
+version:            1.19
 abstract:           ~
 author:
     - Graham Barr <gbarr@pobox.com>
