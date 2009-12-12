@@ -1,7 +1,7 @@
-use Date::Format qw(time2str);
-use Date::Parse qw(strptime);
+use Date::Format qw(time2str strftime);
+use Date::Parse qw(strptime str2time);
 
-print "1..5\n";
+print "1..8\n";
 
 my $i = 1;
 
@@ -40,4 +40,16 @@ my $i = 1;
   print "ok ", $i++, "\n";
 }
 
+{   #   [rt.cpan.org #52387] seconds since the Epoch, UCT 
+  my $time = time;
+  my @lt = localtime(time);
+  print "not " unless strftime("%s", @lt) eq $time;
+  print "ok ", $i++, "\n";
+  print "not " unless time2str("%s",$time) eq $time;
+  print "ok ", $i++, "\n";
+}
 
+{   # [rt.cpan.org #51664]  Change in str2time behaviour between 1.16 and 1.19
+  print "not " if str2time('16 Oct 09') < 0;
+  print "ok ", $i++, "\n";
+}

@@ -14,12 +14,12 @@ not run its Makefile.PL or Build.PL.
 -----BEGIN PGP SIGNED MESSAGE-----
 Hash: SHA1
 
-SHA1 1cfbd5694da3169c17b3648846c9f5e7223f4d26 ChangeLog
-SHA1 205981f550ad232f94d59d8eb79c5e6ecbe8f48d MANIFEST
-SHA1 8e0c2e200e666305e860ca20930ddf7f285825f3 META.yml
-SHA1 6f6d8f3971192224df63d9864dc341078c15286d Makefile.PL
+SHA1 036da21b212a902ecb9d195565bbcd4c51bccecc ChangeLog
+SHA1 efb2a90cd095d97ec148e6263fb921f560cfffb5 MANIFEST
+SHA1 4efed966d43e74a6f53ef2bcdbfc4de05b92035f META.yml
+SHA1 e111caf8b7da35935fa7004a17045cab55278445 Makefile.PL
 SHA1 80cff3b1f65e7df95eaa1a992b688c2c5e1d2b6e README
-SHA1 6823bd5e2e3cac12b7b9870d9840f4606f3eb422 lib/Date/Format.pm
+SHA1 5ca10e18e888daf0883de553219f42ca2422763f lib/Date/Format.pm
 SHA1 08342e72298e839f21236dff7555f2505f928d32 lib/Date/Language.pm
 SHA1 50703aeade60a04398517416d30a2d8918c95578 lib/Date/Language/Afar.pm
 SHA1 f9450ca0047510a4102c32cc4e20a435cdd85b31 lib/Date/Language/Amharic.pm
@@ -53,17 +53,17 @@ SHA1 5da829cf39dc01331ad58f66eced0a1f47e346b6 lib/Date/Language/Tigrinya.pm
 SHA1 20fc6beb32657ca147719f713ff816bbb696da20 lib/Date/Language/TigrinyaEritrean.pm
 SHA1 30f77a43a000f2ce3d22b1b633261a20289025aa lib/Date/Language/TigrinyaEthiopian.pm
 SHA1 54288741c52b09ee92b0487848df74a08cdc3b9e lib/Date/Language/Turkish.pm
-SHA1 dbcc4a151b1c558b32ed61fa7ee98e0fb47b9d7f lib/Date/Parse.pm
+SHA1 b10ec48bd01b73638e4c6dce3f554e4c77267b6c lib/Date/Parse.pm
 SHA1 394c7d372c25107ba5151ceca44c0599188907c7 lib/Time/Zone.pm
-SHA1 62465108c0d5fc14e08ae41e2f963c4d9074b1d6 t/cpanrt.t
+SHA1 ee65cf5b634d907c4cc2d414e49c06175461e6ac t/cpanrt.t
 SHA1 7b16580497a96a4bc551b87b8b97ec89331e81f8 t/date.t
 SHA1 bf6f4a7c599485ab11779c99fc821378e547d26d t/format.t
 SHA1 acef4dd152cd391a3e7a7945c8405a50d965f335 t/getdate.t
 SHA1 501dcb487e33f6b2d4577ef2e6e5f67f038d3c04 t/lang.t
 -----BEGIN PGP SIGNATURE-----
-Version: GnuPG v1.4.9 (Darwin)
+Version: GnuPG v1.4.10 (Darwin)
 
-iEYEARECAAYFAkq9E3QACgkQR0BL4gbYw3QQYACfQg56MxwRuw6XPWOfpumki+CN
-CWAAn1WM3GKmUyJdxf9g95yvZl552Tg0
-=2lbe
+iEYEARECAAYFAksjjt4ACgkQR0BL4gbYw3RCKgCePxf2QrH/3uvOofKewESV0zto
+t+sAnA5dGEi945ziAfAkLyFUhIMWnm7U
+=GqfE
 -----END PGP SIGNATURE-----
