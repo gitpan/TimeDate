@@ -1,5 +1,5 @@
 This file contains message digests of all files listed in MANIFEST,
-signed via the Module::Signature module, version 0.55.
+signed via the Module::Signature module, version 0.70.
 
 To verify the content in this distribution, first make sure you have
 Module::Signature installed, then type:
@@ -14,21 +14,23 @@ not run its Makefile.PL or Build.PL.
 -----BEGIN PGP SIGNED MESSAGE-----
 Hash: SHA1
 
-SHA1 036da21b212a902ecb9d195565bbcd4c51bccecc ChangeLog
-SHA1 efb2a90cd095d97ec148e6263fb921f560cfffb5 MANIFEST
-SHA1 4efed966d43e74a6f53ef2bcdbfc4de05b92035f META.yml
-SHA1 e111caf8b7da35935fa7004a17045cab55278445 Makefile.PL
+SHA1 00fa067571b7bc7806dd9109f6577aa309236fd3 ChangeLog
+SHA1 c4d9a2add4bdf790e5e25663f34352b8e0948a56 MANIFEST
+SHA1 c58ec3281ea7c1532d67095c60348ce8f53bdc49 META.json
+SHA1 421e12445cd12c9649b4e7f1b88724a9b237c0b0 META.yml
+SHA1 d429709aeaefa05cbffa6958efb4ca3cd71a3121 Makefile.PL
 SHA1 80cff3b1f65e7df95eaa1a992b688c2c5e1d2b6e README
 SHA1 5ca10e18e888daf0883de553219f42ca2422763f lib/Date/Format.pm
-SHA1 08342e72298e839f21236dff7555f2505f928d32 lib/Date/Language.pm
+SHA1 395b9d58324f92d4ec56d631fcc2f08d9d8c289b lib/Date/Language.pm
 SHA1 50703aeade60a04398517416d30a2d8918c95578 lib/Date/Language/Afar.pm
 SHA1 f9450ca0047510a4102c32cc4e20a435cdd85b31 lib/Date/Language/Amharic.pm
 SHA1 f00534703736026830f729445d0d6f582481a05e lib/Date/Language/Austrian.pm
 SHA1 c5af5f819bbd3eff3b404e62f1a3735d7e4a038b lib/Date/Language/Brazilian.pm
+SHA1 73b6db5c2f56905658cfa42ed01ee436fc5abc82 lib/Date/Language/Bulgarian.pm
 SHA1 e89738e9f3611a6de79cef7e791c20a05ac2a057 lib/Date/Language/Chinese.pm
 SHA1 d8765df8f8368d6b467a87b1f32397d50253747a lib/Date/Language/Chinese_GB.pm
 SHA1 f5061baf9b980aa0e8feefab059214775bb8182e lib/Date/Language/Czech.pm
-SHA1 726c12ddd66f70ddcfd5bbdbc094777255eb2b9b lib/Date/Language/Danish.pm
+SHA1 0f343e466e38735808d78f9871ca7df7b45ea871 lib/Date/Language/Danish.pm
 SHA1 8566be869607c2b2024821def260de5a828f005f lib/Date/Language/Dutch.pm
 SHA1 ab20e0b3487b85a54a3d6321b50d01d43fe78427 lib/Date/Language/English.pm
 SHA1 9b057eea719ed24f643f4d284cf1fa6ae594e7dc lib/Date/Language/Finnish.pm
@@ -57,13 +59,13 @@ SHA1 b10ec48bd01b73638e4c6dce3f554e4c77267b6c lib/Date/Parse.pm
 SHA1 394c7d372c25107ba5151ceca44c0599188907c7 lib/Time/Zone.pm
 SHA1 ee65cf5b634d907c4cc2d414e49c06175461e6ac t/cpanrt.t
 SHA1 7b16580497a96a4bc551b87b8b97ec89331e81f8 t/date.t
-SHA1 bf6f4a7c599485ab11779c99fc821378e547d26d t/format.t
+SHA1 54016044b60514ce4528d1c813c344714595da59 t/format.t
 SHA1 acef4dd152cd391a3e7a7945c8405a50d965f335 t/getdate.t
-SHA1 501dcb487e33f6b2d4577ef2e6e5f67f038d3c04 t/lang.t
+SHA1 7d033481dab637f54b0c168e64ad1406731a1af6 t/lang.t
 -----BEGIN PGP SIGNATURE-----
-Version: GnuPG v1.4.10 (Darwin)
+Version: GnuPG v1.4.11 (Darwin)
 
-iEYEARECAAYFAksjjt4ACgkQR0BL4gbYw3RCKgCePxf2QrH/3uvOofKewESV0zto
-t+sAnA5dGEi945ziAfAkLyFUhIMWnm7U
-=GqfE
+iEYEARECAAYFAlEigmEACgkQR0BL4gbYw3SJOwCgjnXIVH+iDOco6297z4ao7ryX
+DgQAnRpKYNCQBsjsSO4YX6aqOp9ywhMh
+=3xgB
 -----END PGP SIGNATURE-----

@@ -5,6 +5,7 @@ lib/Date/Language/Afar.pm
 lib/Date/Language/Amharic.pm
 lib/Date/Language/Austrian.pm
 lib/Date/Language/Brazilian.pm
+lib/Date/Language/Bulgarian.pm
 lib/Date/Language/Chinese.pm
 lib/Date/Language/Chinese_GB.pm
 lib/Date/Language/Czech.pm
@@ -43,5 +44,6 @@ t/date.t
 t/format.t
 t/getdate.t
 t/lang.t
-META.yml                                 Module meta-data (added by MakeMaker)
+META.yml                                 Module YAML meta-data (added by MakeMaker)
+META.json                                Module JSON meta-data (added by MakeMaker)
 SIGNATURE                                Public-key signature (added by MakeMaker)

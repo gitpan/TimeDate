@@ -1,21 +1,23 @@
---- #YAML:1.0
-name:               TimeDate
-version:            1.20
-abstract:           ~
+---
+abstract: unknown
 author:
-    - Graham Barr <gbarr@pobox.com>
-license:            perl
-distribution_type:  module
+  - 'Graham Barr <gbarr@pobox.com>'
+build_requires:
+  ExtUtils::MakeMaker: 0
 configure_requires:
-    ExtUtils::MakeMaker:  0
-requires:  {}
-resources:
-    repository:  http://github.com/gbarr/perl-TimeDate
-no_index:
-    directory:
-        - t
-        - inc
-generated_by:       ExtUtils::MakeMaker version 6.48
+  ExtUtils::MakeMaker: 0
+dynamic_config: 1
+generated_by: 'ExtUtils::MakeMaker version 6.64, CPAN::Meta::Converter version 2.120921'
+license: perl
 meta-spec:
-    url:      http://module-build.sourceforge.net/META-spec-v1.4.html
-    version:  1.4
+  url: http://module-build.sourceforge.net/META-spec-v1.4.html
+  version: 1.4
+name: TimeDate
+no_index:
+  directory:
+    - t
+    - inc
+requires: {}
+resources:
+  repository: http://github.com/gbarr/perl-TimeDate
+version: 2.30
